@@ -10,21 +10,25 @@ class ViewPoints extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              
+
             //*Puntos de competidor azul
             ViewsPoints(
+              faltas: 0,
               color: Color.fromARGB(255, 6, 14, 162),
               name: Text("Isauro"),
               card: CardPoints(
                 color: Color.fromARGB(255, 23, 34, 246),
+                puntos: 15,
               ),
             ), 
 
             //*Puntos de competidor rojo
             ViewsPoints(
+              faltas: 7,
               color: Color.fromARGB(255, 162, 14, 6),
-              name: Text("El choncho"),
+              name: Text("Humberto"),
               card: CardPoints(
+                puntos: 10,
                 color: Color.fromARGB(255, 246, 34, 23),
               ),
             ),
@@ -39,12 +43,13 @@ class ViewsPoints extends StatelessWidget {
   final Color color;
   final Text? name;
   final Widget? card; 
-
+  final int faltas;
   const ViewsPoints({
     Key? key, 
     required this.color, 
     this.name,
-    required this.card,
+    required this.card, 
+    required this.faltas, 
   }) : super(key: key);
 
   @override
@@ -63,7 +68,7 @@ class ViewsPoints extends StatelessWidget {
             child: name != null ? Text(
               name!.data!,
               style:  const TextStyle(
-                fontSize: 50,
+                fontSize: 50, //*Usage 30 en dispositivos moviles
                 fontWeight: FontWeight.bold, 
                 color: Colors.white,
               ),
@@ -88,9 +93,11 @@ class ViewsPoints extends StatelessWidget {
 
 class CardPoints extends StatelessWidget {
   final Color color;
+  final int puntos;
   const CardPoints({
     Key? key, 
     required this.color, 
+    required this.puntos, 
   }) : super(key: key);
 
   @override
@@ -109,7 +116,7 @@ class CardPoints extends StatelessWidget {
       ),
       child:   Center(
         child: Text(
-          "25", //TODO: Aqui debe de ir los puntos
+          '$puntos', //TODO: Aqui debe de ir los puntos
           style: TextStyle(
             color: Colors.white, 
             fontSize: size.width * 0.2, 
