@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:marcador/config/controller/getx_controller.dart';
 
 class ViewPoints extends StatelessWidget {
   const ViewPoints({super.key});
 
   @override
-  Widget build(BuildContext context){
-    return const Scaffold(
+  Widget build(BuildContext context) {
+    final controller = Get.put(PointsController());
+
+    return Scaffold(
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            //*Puntos de competidor azul
             ViewsPoints(
-              faltas: 0,
-              color: Color.fromARGB(255, 6, 14, 162),
-              name: Text("Isauro"),
-              card: CardPoints(
-                color: Color.fromARGB(255, 23, 34, 246),
-                puntos: 15,
-              ),
-            ), 
-
-            //*Puntos de competidor rojo
+              faltas: controller.faltasIsauro.value,  // Accede al valor aquí
+              color: const Color.fromARGB(255, 6, 14, 162),
+              name: const Text("Isauro"),
+              card: Obx(() => CardPoints(
+                color: const Color.fromARGB(255, 23, 34, 246),
+                puntos: controller.puntosIsauro.value,
+                faltas: controller.faltasIsauro.value,
+              )),
+            ),
             ViewsPoints(
-              faltas: 7,
-              color: Color.fromARGB(255, 162, 14, 6),
-              name: Text("Humberto"),
-              card: CardPoints(
-                puntos: 10,
-                color: Color.fromARGB(255, 246, 34, 23),
-              ),
+              faltas: controller.faltasHumberto.value,  // Accede al valor aquí
+              color: const Color.fromARGB(255, 162, 14, 6),
+              name: const Text("Humberto"),
+              card: Obx(() => CardPoints(
+                color: const Color.fromARGB(255, 246, 34, 23),
+                puntos: controller.puntosHumberto.value,
+                faltas: controller.faltasHumberto.value,
+              )),
             ),
           ],
         ),
@@ -38,6 +40,7 @@ class ViewPoints extends StatelessWidget {
     );
   }
 }
+
 
 class ViewsPoints extends StatelessWidget {
   final Color color;
@@ -94,15 +97,17 @@ class ViewsPoints extends StatelessWidget {
 class CardPoints extends StatelessWidget {
   final Color color;
   final int puntos;
+  final int faltas;
+  
   const CardPoints({
     Key? key, 
     required this.color, 
     required this.puntos, 
+    required this.faltas,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final textStile= Theme.of(context).textTheme;
     final Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
@@ -110,20 +115,32 @@ class CardPoints extends StatelessWidget {
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(65),
           bottomLeft: Radius.circular(65),
-          // bottomRight: Radius.circular(15),
-          // topLeft: Radius.circular(15),
         )
       ),
-      child:   Center(
-        child: Text(
-          '$puntos', //TODO: Aqui debe de ir los puntos
-          style: TextStyle(
-            color: Colors.white, 
-            fontSize: size.width * 0.2, 
-            fontWeight: FontWeight.bold
-          ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$puntos',
+              style: TextStyle(
+                color: Colors.white, 
+                fontSize: size.width * 0.2, 
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              'Faltas: $faltas',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: size.width * 0.1,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
